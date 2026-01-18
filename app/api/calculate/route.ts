@@ -9,13 +9,13 @@ export async function POST(req: Request) {
   const { rows, clientId } = await req.json();
 
   const { data, error } = await supabase.rpc(
-    "calculate_many_deliveries",
+    "calculate_many_deliveries_json",
     {
       p_rows: rows,          // 👈 массив
       p_client_id: clientId  // 👈 client
-    }
+    },
+
   );
-  console.log("Datassss",data)
   if (error) {
     console.error("RPC ERROR:", error);
     return Response.json({ error: error.message }, { status: 500 });
@@ -23,6 +23,6 @@ export async function POST(req: Request) {
   console.log("ROWS SENT TO RPC:", JSON.stringify(rows, null, 2));
   console.log("CLIENT:", clientId);
   
-  return Response.json(data);
+  return Response.json(data ?? []);
 }
 

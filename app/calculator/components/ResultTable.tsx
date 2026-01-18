@@ -6,8 +6,9 @@ export function ResultTable({
     results: any[];
   }) {
     const map = new Map(results.map(r => [r.row_id, r]));
-  
-    return (
+    console.log("ROWS", rows.length);
+    console.log("RESULTS", results.length);
+        return (
       <div className="h-full overflow-auto bg-white">
         <table className="min-w-full text-sm border-collapse">
           <thead className="sticky top-0 bg-slate-700 text-white">
