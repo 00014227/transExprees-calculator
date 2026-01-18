@@ -14,8 +14,10 @@ export const COLUMN_ALIASES: Record<string, string> = {
     "тип услуги": "service_type_id",
   
     // WEIGHT
-    "платный вес": "weight",
-    "фактический вес": "weight",
-    "объемный вес": "weight"
+    "оплачиваемый вес": "weight",
+
+    // можно оставить, но мы их не используем
+    "фактический вес": "actual_weight",
+    "объемный вес": "volume_weight"
   };
   
