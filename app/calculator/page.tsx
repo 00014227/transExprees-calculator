@@ -21,12 +21,13 @@ export default function CalculatorPage() {
       const payload = normalized
       .filter(r => !r._parse_error)
       .map(r => ({
-        row_id: String(r._order_id),   // 🔥 ВАЖНО
-        from_city: r.from_city,
-        to_city: r.to_city,
+        row_id: String(r._order_id),
+        from_city: String(r.from_city).trim(),
+        to_city: String(r.to_city).trim(),
         service_type_id: Number(r.service_type_id),
-        weight: Math.ceil(Number(r.weight))
+        weight: Number(String(r.weight).replace(",", "."))
       }));
+    
     
     
     

@@ -14,7 +14,7 @@ export function normalizeRows(rawRows: any[]) {
 
       if (mapKey === "weight") {
         if (!extracted.weight && value !== null && value !== "") {
-          extracted.weight = Number(value);
+          extracted.weight = Number(String(value).replace(",", "."));
         }
       } else {
         extracted[mapKey] = String(value).trim();
