@@ -29,21 +29,35 @@ export default function CalculatorPage() {
         box_count: Number(r.box_count)
       }));
     
-      console.log("PAAAA",payload)
-    
-    
-      const res = await fetch("/api/calculate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          rows: payload,
-          clientId
-        })
-      });
-    
-      const data = await res.json();
-      setResults(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/calculate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            rows: payload,
+            clientId
+          })
+        });
+
+        const data = await res.json();
+        setResults(data);
+
+        // History is best-effort and should not block normal calculator usage.
+        fetch("/api/calculation-history", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientId,
+            requestRows: payload,
+            responseRows: Array.isArray(data) ? data : [],
+            requestCount: payload.length
+          })
+        }).catch((historyError) => {
+          console.error("Failed to save calculation history:", historyError);
+        });
+      } finally {
+        setLoading(false);
+      }
     }
     
   
