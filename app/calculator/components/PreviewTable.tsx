@@ -9,6 +9,7 @@ export function PreviewTable({ rows }: { rows: any[] }) {
               <th className="px-3 py-2 border-r">Куда</th>
               <th className="px-3 py-2 border-r">Тип</th>
               <th className="px-3 py-2 border-r">Вес</th>
+              <th className="px-3 py-2 border-r">Количество коробок</th>
               <th className="px-3 py-2">Ошибка</th>
             </tr>
           </thead>
@@ -36,6 +37,9 @@ export function PreviewTable({ rows }: { rows: any[] }) {
                   </td>
                   <td className="px-3 py-2 border-r text-right text-gray-800">
                     {r.weight}
+                  </td>
+                         <td className="px-3 py-2 border-r text-right text-gray-800">
+                    {r.box_count}
                   </td>
                   <td className="px-3 py-2 text-red-600 font-medium">
                     {r._parse_error || ""}

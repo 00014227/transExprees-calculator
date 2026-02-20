@@ -15,6 +15,7 @@ export const COLUMN_ALIASES: Record<string, string> = {
   
     // WEIGHT
     "оплачиваемый вес": "weight",
+    "количество коробок": "box_count",
 
     // можно оставить, но мы их не используем
     "фактический вес": "actual_weight",

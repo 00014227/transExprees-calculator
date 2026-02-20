@@ -63,7 +63,7 @@ export function normalizeRows(rawRows: any[]) {
       from_city: extracted.from_city,
       to_city: extracted.to_city,
       weight: Number(extracted.weight || 0),
-
+      box_count: extracted.box_count,
       // --- системные поля ---
       _order_id: extracted.order_id,
       service_type_id: dbServiceType, // 👈 ТОЛЬКО ДЛЯ BACKEND

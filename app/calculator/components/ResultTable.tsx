@@ -17,6 +17,7 @@ export function ResultTable({
               <th className="p-3 border border-slate-600 text-left">Откуда</th>
               <th className="p-3 border border-slate-600 text-left">Куда</th>
               <th className="p-3 border border-slate-600 text-right">Вес</th>
+              <th className="p-3 border border-slate-600 text-right">Количество коробок</th>
               <th className="p-3 border border-slate-600 text-right">Цена</th>
               <th className="p-3 border border-slate-600 text-left">Ошибка</th>
             </tr>
@@ -40,7 +41,8 @@ export function ResultTable({
                   <td className="p-2 border">{r.from_city}</td>
                   <td className="p-2 border">{r.to_city}</td>
                   <td className="p-2 border text-right">{r.weight}</td>
-  
+                  <td className="p-2 border text-right">{r.box_count}</td>
+
                   <td className={`p-2 border text-right font-semibold ${
                     isError ? "text-gray-400" : "text-green-700"
                   }`}>

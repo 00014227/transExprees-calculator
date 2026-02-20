@@ -25,10 +25,11 @@ export default function CalculatorPage() {
         from_city: String(r.from_city).trim(),
         to_city: String(r.to_city).trim(),
         service_type_id: Number(r.service_type_id),
-        weight: Number(String(r.weight).replace(",", "."))
+        weight: Number(String(r.weight).replace(",", ".")),
+        box_count: Number(r.box_count)
       }));
     
-    
+      console.log("PAAAA",payload)
     
     
       const res = await fetch("/api/calculate", {
