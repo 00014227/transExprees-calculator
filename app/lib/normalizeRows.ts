@@ -2,7 +2,7 @@ import { COLUMN_ALIASES } from "./columnMap";
 import { EXCEL_SERVICE_TYPE_TO_DB } from "./serviceTypeMap";
 
 export function normalizeRows(rawRows: any[]) {
-  return rawRows.map((row) => {
+  return rawRows.map((row, idx) => {
     const extracted: any = {};
 
     // -----------------------------
@@ -65,8 +65,10 @@ export function normalizeRows(rawRows: any[]) {
       weight: Number(extracted.weight || 0),
       box_count: extracted.box_count,
       // --- системные поля ---
+      _row_idx: idx,
       _order_id: extracted.order_id,
-      service_type_id: dbServiceType, // 👈 ТОЛЬКО ДЛЯ BACKEND
+      _client_name: extracted.client_name?.trim() || null,
+      service_type_id: dbServiceType,
       _parse_error: error
     };
   });
