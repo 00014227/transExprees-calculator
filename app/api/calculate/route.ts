@@ -8,6 +8,7 @@ const supabase = createClient(
 type InputRow = {
   row_id: string;
   client_name: string | null;
+  recipient_name: string | null;
   from_city: string;
   to_city: string;
   service_type_id: number;
@@ -15,7 +16,7 @@ type InputRow = {
   box_count: number;
 };
 
-type RpcRow = Omit<InputRow, "client_name">;
+type RpcRow = Omit<InputRow, "client_name" | "recipient_name">;
 
 export async function POST(req: Request) {
   try {
@@ -97,7 +98,17 @@ export async function POST(req: Request) {
           }));
         }
 
-        return (data as any[]) ?? [];
+        // client_id=12: recipient "YGO UB" → fixed price 10,000
+        const inputMap = new Map(groupRows.map(r => [r.row_id, r]));
+        return ((data as any[]) ?? []).map(result => {
+          if (
+            clientId === 12 &&
+            inputMap.get(result.row_id)?.recipient_name?.toUpperCase() === "YGO UB"
+          ) {
+            return { ...result, total_price: 10000, error: null };
+          }
+          return result;
+        });
       })
     );
 

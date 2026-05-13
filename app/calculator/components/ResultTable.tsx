@@ -9,6 +9,7 @@ export function ResultTable({ rows, results }: { rows: any[]; results: any[] }) 
           <tr>
             <th className="p-3 border border-slate-600 text-left">#</th>
             <th className="p-3 border border-slate-600 text-left">Клиент</th>
+            <th className="p-3 border border-slate-600 text-left">Получатель</th>
             <th className="p-3 border border-slate-600 text-left">Откуда</th>
             <th className="p-3 border border-slate-600 text-left">Куда</th>
             <th className="p-3 border border-slate-600 text-right">Вес</th>
@@ -33,6 +34,7 @@ export function ResultTable({ rows, results }: { rows: any[]; results: any[] }) 
               >
                 <td className="p-2 border">{r._order_id}</td>
                 <td className="p-2 border text-gray-500 italic">{r._client_name || "—"}</td>
+                <td className="p-2 border">{r._recipient_name || "—"}</td>
                 <td className="p-2 border">{r.from_city}</td>
                 <td className="p-2 border">{r.to_city}</td>
                 <td className="p-2 border text-right">{r.weight}</td>

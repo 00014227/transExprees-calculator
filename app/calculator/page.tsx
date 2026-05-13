@@ -20,6 +20,7 @@ export default function CalculatorPage() {
       .map(r => ({
         row_id: String(r._row_idx),
         client_name: r._client_name ?? null,
+        recipient_name: r._recipient_name ?? null,
         from_city: String(r.from_city).trim(),
         to_city: String(r.to_city).trim(),
         service_type_id: Number(r.service_type_id),

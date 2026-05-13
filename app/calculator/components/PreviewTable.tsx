@@ -6,6 +6,7 @@ export function PreviewTable({ rows }: { rows: any[] }) {
           <tr className="text-gray-700 font-semibold">
             <th className="px-3 py-2 border-r">Заказ</th>
             <th className="px-3 py-2 border-r">Клиент</th>
+            <th className="px-3 py-2 border-r">Получатель</th>
             <th className="px-3 py-2 border-r">Откуда</th>
             <th className="px-3 py-2 border-r">Куда</th>
             <th className="px-3 py-2 border-r">Тип</th>
@@ -28,6 +29,7 @@ export function PreviewTable({ rows }: { rows: any[] }) {
               >
                 <td className="px-3 py-2 border-r font-medium text-gray-800">{r._order_id}</td>
                 <td className="px-3 py-2 border-r text-gray-500 italic">{r._client_name || "—"}</td>
+                <td className="px-3 py-2 border-r text-gray-800">{r._recipient_name || "—"}</td>
                 <td className="px-3 py-2 border-r text-gray-800">{r.from_city}</td>
                 <td className="px-3 py-2 border-r text-gray-800">{r.to_city}</td>
                 <td className="px-3 py-2 border-r text-center text-gray-800">{r.excel_service_type}</td>

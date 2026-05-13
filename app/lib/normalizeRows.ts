@@ -9,7 +9,7 @@ export function normalizeRows(rawRows: any[]) {
     // 1. Извлекаем нужные колонки
     // -----------------------------
     for (const [key, value] of Object.entries(row)) {
-      const mapKey = COLUMN_ALIASES[key.toLowerCase().trim()];
+      const mapKey = COLUMN_ALIASES[key.toLowerCase().replace(/\s+/g, " ").trim()];
       if (!mapKey) continue;
 
       if (mapKey === "weight") {
@@ -68,6 +68,7 @@ export function normalizeRows(rawRows: any[]) {
       _row_idx: idx,
       _order_id: extracted.order_id,
       _client_name: extracted.client_name?.trim() || null,
+      _recipient_name: extracted.recipient_name?.trim() || null,
       service_type_id: dbServiceType,
       _parse_error: error
     };

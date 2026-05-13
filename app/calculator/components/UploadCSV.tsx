@@ -1,17 +1,17 @@
 "use client";
 
-import { parseCsv } from "../../lib/parseCsv";
+import { parseFile } from "../../lib/parseFile";
 
 export function UploadCSV({ onLoad }: { onLoad: (rows: any[]) => void }) {
   return (
     <div>
       <input
         type="file"
-        accept=".csv"
+        accept=".csv,.xlsx,.xls"
         onChange={async (e) => {
           const file = e.target.files?.[0];
           if (!file) return;
-          const data = await parseCsv(file);
+          const data = await parseFile(file);
           onLoad(data);
         }}
       />

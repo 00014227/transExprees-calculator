@@ -23,6 +23,8 @@ export const COLUMN_ALIASES: Record<string, string> = {
     "количество коробок": "box_count",
 
     "фактический вес": "actual_weight",
-    "объемный вес": "volume_weight"
+    "объемный вес": "volume_weight",
+
+    "имя получателя": "recipient_name",
   };
   
