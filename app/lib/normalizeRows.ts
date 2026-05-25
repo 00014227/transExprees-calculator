@@ -34,8 +34,10 @@ export function normalizeRows(rawRows: any[]) {
       error = "Не указан город получателя";
     } else if (!extracted.service_type_id) {
       error = "Не указан тип услуги";
-    } else if (!extracted.weight || isNaN(extracted.weight)) {
+    } else if (!extracted.weight || isNaN(extracted.weight) || extracted.weight <= 0) {
       error = "Некорректный платный вес";
+    } else if (extracted.weight > 9999) {
+      error = "Некорректный платный вес (слишком большой)";
     }
 
     // -----------------------------

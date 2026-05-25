@@ -25,7 +25,7 @@ export default function CalculatorPage() {
         to_city: String(r.to_city).trim(),
         service_type_id: Number(r.service_type_id),
         weight: Number(String(r.weight).replace(",", ".")),
-        box_count: Number(r.box_count) || 1,
+        box_count: Math.min(Math.max(1, Math.trunc(Number(r.box_count) || 1)), 9999),
       }));
 
     try {

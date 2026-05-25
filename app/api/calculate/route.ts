@@ -5,6 +5,19 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+const CLIENT_CITY_ALIASES: Record<number, Record<string, string>> = {
+  4: {
+    "namangan":  "Namangan shahri",
+    "urganch":   "Urganch shahri",
+  },
+};
+
+function resolveCity(clientId: number | null, city: string): string {
+  if (clientId === null) return city;
+  const map = CLIENT_CITY_ALIASES[clientId];
+  return map?.[city.toLowerCase().trim()] ?? city;
+}
+
 type InputRow = {
   row_id: string;
   client_name: string | null;
@@ -65,8 +78,8 @@ export async function POST(req: Request) {
       sortedGroups.map(async ([clientId, groupRows]) => {
         const rpcRows: RpcRow[] = groupRows.map(r => ({
           row_id:          r.row_id,
-          from_city:       r.from_city,
-          to_city:         r.to_city,
+          from_city:       resolveCity(clientId, r.from_city),
+          to_city:         resolveCity(clientId, r.to_city),
           service_type_id: r.service_type_id,
           weight:          r.weight,
           box_count:       r.box_count,
