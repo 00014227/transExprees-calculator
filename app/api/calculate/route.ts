@@ -112,6 +112,7 @@ export async function POST(req: Request) {
         }
 
         // client_id=12: recipient "YGO UB" → fixed price 10,000
+        // clients with +10% markup on all prices
         const inputMap = new Map(groupRows.map(r => [r.row_id, r]));
         return ((data as any[]) ?? []).map(result => {
           if (
@@ -119,6 +120,15 @@ export async function POST(req: Request) {
             inputMap.get(result.row_id)?.recipient_name?.toUpperCase() === "YGO UB"
           ) {
             return { ...result, total_price: 10000, error: null };
+          }
+          if (
+            result.total_price != null &&
+            [14, 15, 16, 17, 18, 20, 23, 24, 25, 26, 27, 29, 34].includes(clientId as number)
+          ) {
+            return { ...result, total_price: Math.round(result.total_price * 1.1) };
+          }
+          if (clientId === 22 && result.total_price != null) {
+            return { ...result, total_price: Math.round(result.total_price * 1.15) };
           }
           return result;
         });
