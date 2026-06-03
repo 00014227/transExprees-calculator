@@ -2,7 +2,7 @@
 
 import { parseFile } from "../../lib/parseFile";
 
-export function UploadCSV({ onLoad }: { onLoad: (rows: any[]) => void }) {
+export function UploadCSV({ onLoad }: { onLoad: (rows: any[], filename: string) => void }) {
   return (
     <div>
       <input
@@ -12,7 +12,7 @@ export function UploadCSV({ onLoad }: { onLoad: (rows: any[]) => void }) {
           const file = e.target.files?.[0];
           if (!file) return;
           const data = await parseFile(file);
-          onLoad(data);
+          onLoad(data, file.name);
         }}
       />
     </div>

@@ -35,6 +35,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const rows: InputRow[] = body.rows ?? [];
+    const saveAnalytics: boolean = body.save_analytics === true;
+    const filename: string = body.filename ?? "";
+    const normalizedRows: any[] = body.normalized_rows ?? [];
 
     // ── 0. Diagnose which role Supabase is using ───────────────
     const { data: roleData } = await supabase.rpc("get_current_role" as any);
@@ -135,7 +138,61 @@ export async function POST(req: Request) {
       })
     );
 
-    return Response.json(settled.flat());
+    const allResults = settled.flat();
+
+    // ── Save to BI analytics table if requested ────────────────
+    if (saveAnalytics && normalizedRows.length > 0) {
+      const sessionId = crypto.randomUUID();
+      const resultMap = new Map(allResults.map((r: any) => [r.row_id, r]));
+
+      const biRows = normalizedRows.map((norm: any) => {
+        const rowId = String(norm._row_idx);
+        const res   = resultMap.get(rowId);
+        return {
+          session_id:         sessionId,
+          filename:           filename || null,
+          client_id:          clientMap.get((norm._client_name ?? "").toLowerCase().trim()) ?? null,
+          client_name:        norm._client_name ?? null,
+          order_id:           norm._order_id ?? null,
+          from_city:          norm.from_city ?? null,
+          to_city:            norm.to_city ?? null,
+          weight:             norm.weight ?? null,
+          box_count:          Number(norm.box_count) || null,
+          service_type_id:    norm.service_type_id ?? null,
+          excel_service_type: norm.excel_service_type ?? null,
+          recipient_name:     norm._recipient_name ?? null,
+          parse_error:        norm._parse_error ?? null,
+          delivery_cost:      res?.total_price ?? null,
+          calc_error:         res?.error ?? null,
+          raw_row:            norm,
+        };
+      });
+
+      const orderIdsInBatch = biRows
+        .map(r => r.order_id)
+        .filter((id): id is string => id != null && id !== "");
+
+      if (orderIdsInBatch.length > 0) {
+        const { error: delError } = await supabase
+          .from("bi_results")
+          .delete()
+          .in("order_id", orderIdsInBatch);
+        if (delError) console.error("BI delete error:", delError.message);
+      }
+
+      const biRowsWithTs = biRows.map(r => ({ ...r, updated_at: new Date().toISOString() }));
+
+      const { error: biError } = await supabase
+        .from("bi_results")
+        .insert(biRowsWithTs);
+      if (biError) {
+        console.error("BI insert error:", biError.message);
+      } else {
+        console.log(`BI inserted ${biRows.length} rows, session=${sessionId}`);
+      }
+    }
+
+    return Response.json(allResults);
   } catch (err: any) {
     console.error("calculate route unhandled error:", err);
     return Response.json({ error: err?.message ?? "Internal server error" }, { status: 500 });

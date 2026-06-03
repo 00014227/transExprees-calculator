@@ -11,6 +11,8 @@ export default function CalculatorPage() {
   const [normalized, setNormalized] = useState<any[]>([]);
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [filename, setFilename] = useState<string>("");
+  const [saveAnalytics, setSaveAnalytics] = useState(false);
 
   async function calculate() {
     setLoading(true);
@@ -32,7 +34,12 @@ export default function CalculatorPage() {
       const res = await fetch("/api/calculate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ rows: payload }),
+        body: JSON.stringify({
+          rows: payload,
+          save_analytics: saveAnalytics,
+          filename,
+          normalized_rows: saveAnalytics ? normalized : undefined,
+        }),
       });
 
       if (!res.ok) {
@@ -62,8 +69,9 @@ export default function CalculatorPage() {
       {/* ACTION BAR */}
       <div className="p-4 bg-white border-b flex items-center gap-4">
         <UploadCSV
-          onLoad={(rows) => {
+          onLoad={(rows, name) => {
             setNormalized(normalizeRows(rows));
+            setFilename(name);
             setResults([]);
           }}
         />
@@ -75,6 +83,16 @@ export default function CalculatorPage() {
         >
           {loading ? "Расчёт..." : "Рассчитать"}
         </button>
+
+        <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            checked={saveAnalytics}
+            onChange={e => setSaveAnalytics(e.target.checked)}
+            className="w-4 h-4"
+          />
+          Сохранить в аналитику
+        </label>
 
         {results.length > 0 && (
           <button
