@@ -124,15 +124,6 @@ export async function POST(req: Request) {
           ) {
             return { ...result, total_price: 10000, error: null };
           }
-          if (
-            result.total_price != null &&
-            [14, 15, 16, 17, 18, 20, 23, 24, 25, 26, 27, 29, 34].includes(clientId as number)
-          ) {
-            return { ...result, total_price: Math.round(result.total_price * 1.1) };
-          }
-          if (clientId === 22 && result.total_price != null) {
-            return { ...result, total_price: Math.round(result.total_price * 1.15) };
-          }
           return result;
         });
       })
